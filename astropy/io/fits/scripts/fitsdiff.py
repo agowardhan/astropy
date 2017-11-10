@@ -225,14 +225,14 @@ def match_files(paths):
 
     for path in paths:
         if glob.has_magic(path):
-            files = [os.path.abspath(f) for f in glob.glob(path)]
+            files = [os.path.abspath(os.path.join(path,f)) for f in glob.glob(path)]
             if not files:
                 log.error('Wildcard pattern {!r} did not match '
                           'any files.'.format(path))
                 sys.exit(2)
             filelists.append(files)
         elif os.path.isdir(path):
-            filelists.append([os.path.abspath(f) for f in os.listdir(path)])
+            filelists.append([os.path.abspath(os.path.join(path,f)) for f in os.listdir(path)])
         elif os.path.isfile(path):
             filelists.append([path])
         else:
