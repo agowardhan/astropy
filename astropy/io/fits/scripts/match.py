@@ -7,9 +7,9 @@ import sys
 import textwrap
 import warnings
 
-from ... import fits
-from ..util import fill
-from ....utils.exceptions import AstropyDeprecationWarning
+from astropy.io import fits
+#from util import fill
+#from ....utils.exceptions import AstropyDeprecationWarning
 
 
 log = logging.getLogger('fitsdiff')
@@ -79,7 +79,7 @@ def handle_options(argv=None):
             try:
                 values = [v.strip() for v in open(value, 'r').readlines()]
                 setattr(parser.values, option.dest, values)
-            except OSError as exc:
+            except IOError as exc:
                 log.warning('reading {} for {} failed: {}; ignoring this '
                             'argument'.format(value, opt, exc))
                 del exc
@@ -232,8 +232,7 @@ def match_files(paths):
                 sys.exit(2)
             filelists.append(files)
         elif os.path.isdir(path):
-	    filelists.append([os.path.abspath(os.path.join(path,f)) for f in os.listdir(path)])
-            #filelists.append([os.path.abspath(f) for f in os.listdir(path)])
+            filelists.append([os.path.abspath(f) for f in os.listdir(path)])
         elif os.path.isfile(path):
             filelists.append([path])
         else:
